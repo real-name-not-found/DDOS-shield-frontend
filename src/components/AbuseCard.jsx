@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 export default function AbuseCard({ totalReports = 0, data }) {
+    const [showWhitelistTip, setShowWhitelistTip] = useState(false);
+
     return (
         <div className="border-r border-b border-black p-8 flex flex-col min-h-[320px] hover:bg-neutral-50 transition-colors">
             <div className="flex justify-between items-start mb-6">
@@ -29,6 +33,41 @@ export default function AbuseCard({ totalReports = 0, data }) {
                             {data?.isTor === true ? 'Yes' : data?.isTor === false ? 'No' : '—'}
                         </span>
                     </div>
+
+                    {/* Whitelisted row with tooltip */}
+                    <div className="flex justify-between items-center border-b border-black/10 pb-2">
+                        <div className="flex items-center gap-1.5 relative">
+                            <span className="text-[10px] uppercase tracking-widest text-neutral-400">Whitelisted</span>
+                            <div
+                                className="relative"
+                                onMouseEnter={() => setShowWhitelistTip(true)}
+                                onMouseLeave={() => setShowWhitelistTip(false)}
+                            >
+                                <span className="text-[9px] text-neutral-400 cursor-help hover:text-neutral-600 transition-colors border border-neutral-300 rounded-full size-3.5 inline-flex items-center justify-center font-sans font-medium leading-none">
+                                    ?
+                                </span>
+                                {showWhitelistTip && (
+                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 bg-black text-white p-4 z-50 pointer-events-none">
+                                        <div className="font-bold text-[10px] uppercase tracking-wider text-white/60 mb-2">AbuseIPDB Whitelist</div>
+                                        <p className="text-[11px] leading-relaxed text-white/85 mb-2">
+                                            Whitelisted netblocks are typically owned by trusted entities such as Google, Microsoft, or Cloudflare, often used for search engine crawlers, DNS resolvers, or CDN services.
+                                        </p>
+                                        <p className="text-[11px] leading-relaxed text-white/85 mb-2">
+                                            However, these same entities also provide cloud hosting, VPS, and email services that can be abused by malicious actors for phishing, spam, or DDoS attacks.
+                                        </p>
+                                        <p className="text-[10px] leading-relaxed text-white/60 italic">
+                                            A whitelisted IP does not guarantee safety — exercise caution when the IP originates from a shared hosting or cloud infrastructure.
+                                        </p>
+                                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-black"></div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <span className={`font-sans text-sm font-bold ${data?.isWhitelisted ? 'text-risk-ok' : 'text-neutral-500'}`}>
+                            {data?.isWhitelisted === true ? 'Yes' : data?.isWhitelisted === false ? 'No' : '—'}
+                        </span>
+                    </div>
+
                     {data?.hostnames && data.hostnames.length > 0 && (
                         <div className="flex justify-between items-center border-b border-black/10 pb-2">
                             <span className="text-[10px] uppercase tracking-widest text-neutral-400">Hostnames</span>

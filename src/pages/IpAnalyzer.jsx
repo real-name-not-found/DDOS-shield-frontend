@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import RiskGauge from '../components/RiskGauge';
@@ -7,9 +7,9 @@ import MlPredictionCard from '../components/MlPredictionCard';
 import AbuseCard from '../components/AbuseCard';
 import RecommendationCard from '../components/RecommendationCard';
 import MiniMap from '../components/MiniMap';
-import AttackFrequencyChart from '../components/AttackFrequencyChart';
-import ReportsTable from '../components/ReportsTable';
-import { analyzeIP } from '../services/api';
+import ThreatRadar from '../components/AttackFrequencyChart';
+import AnalysisHistoryTable from '../components/ReportsTable';
+import { analyzeIP, getHistory } from '../services/api';
 import { isValidIP, isPrivateIP, getThreatLevel } from '../utils/helpers';
 
 export default function IpAnalyzer() {
@@ -17,6 +17,21 @@ export default function IpAnalyzer() {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [hasSearched, setHasSearched] = useState(false);
+    const [history, setHistory] = useState([]);
+
+    // Fetch analysis history on mount
+    const fetchHistory = useCallback(async () => {
+        try {
+            const res = await getHistory();
+            setHistory(res.data || []);
+        } catch (err) {
+            console.error('Failed to fetch history:', err);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchHistory();
+    }, [fetchHistory]);
 
     const handleAnalyze = async (e) => {
         e.preventDefault();
@@ -41,6 +56,8 @@ export default function IpAnalyzer() {
             const res = await analyzeIP(trimmedIp);
             setResult(res.data);
             toast.success('Analysis complete');
+            // Refresh history to include new analysis
+            fetchHistory();
         } catch (err) {
             console.error('IP analysis error:', err);
             const msg = err.response?.data?.error || 'Failed to analyze IP';
@@ -48,6 +65,17 @@ export default function IpAnalyzer() {
         } finally {
             setLoading(false);
         }
+    };
+
+    // Handle clicking an IP in the history table
+    const handleSelectIP = (selectedIp) => {
+        setIp(selectedIp);
+        // Auto-analyze the selected IP
+        const fakeEvent = { preventDefault: () => { } };
+        setIp(selectedIp);
+        setTimeout(() => {
+            document.querySelector('form')?.requestSubmit();
+        }, 100);
     };
 
     const riskScore = result?.abuseScore || 0;
@@ -124,32 +152,35 @@ export default function IpAnalyzer() {
                                     usageType: result?.usageType,
                                     domain: result?.domain,
                                     isTor: result?.isTor,
+                                    isWhitelisted: result?.isWhitelisted,
                                     hostnames: result?.hostnames,
                                 }}
                             />
-                            <RecommendationCard riskScore={riskScore} />
+                            <RecommendationCard riskScore={riskScore} result={result} />
                         </div>
                     </motion.div>
 
-                    {/* Map + Attack Frequency Chart */}
+                    {/* Map + Threat Radar */}
                     <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="grid grid-cols-1 lg:grid-cols-3 border-l border-b border-black mt-12">
                         <MiniMap
                             lat={result?.lat || 31.2}
                             lng={result?.lon || 121.5}
                             label={result ? `${result.city || result.country || 'Unknown'}, ${result.countryCode || ''}` : 'Shanghai, CN'}
                         />
-                        <AttackFrequencyChart />
-                    </motion.div>
-
-                    {/* Reports Table */}
-                    <motion.div {...fadeIn} transition={{ delay: 0.3 }}>
-                        <ReportsTable totalReports={result?.totalReports || 142} />
+                        <ThreatRadar result={result} />
                     </motion.div>
                 </>
             )}
 
-            {/* Empty state before search */}
-            {!hasSearched && !result && (
+            {/* Analysis History Table — always visible if there's history */}
+            {history.length > 0 && (
+                <motion.div {...fadeIn} transition={{ delay: hasSearched ? 0.3 : 0.1 }}>
+                    <AnalysisHistoryTable history={history} onSelectIP={handleSelectIP} />
+                </motion.div>
+            )}
+
+            {/* Empty state before search (only if no history either) */}
+            {!hasSearched && !result && history.length === 0 && (
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -160,6 +191,19 @@ export default function IpAnalyzer() {
                     <p className="text-sm text-neutral-400 max-w-md">
                         Our distributed sensor network will analyze the IP against multiple threat intelligence databases and produce a comprehensive risk assessment.
                     </p>
+                </motion.div>
+            )}
+
+            {/* Empty state with history but no search yet */}
+            {!hasSearched && !result && history.length > 0 && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex flex-col items-center justify-center py-12 text-center"
+                >
+                    <span className="material-symbols-outlined text-4xl text-neutral-300 mb-4">travel_explore</span>
+                    <h3 className="font-serif text-xl text-neutral-400 mb-1">Enter an IP address above to start a new analysis</h3>
+                    <p className="text-xs text-neutral-400">or click any IP in the history table below to re-analyze</p>
                 </motion.div>
             )}
 
