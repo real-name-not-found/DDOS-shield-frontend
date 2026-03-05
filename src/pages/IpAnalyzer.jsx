@@ -51,7 +51,6 @@ export default function IpAnalyzer() {
     };
 
     const riskScore = result?.abuseScore || 0;
-    const confidence = result?.abuseScore ? Math.min(99.9, result.abuseScore + 10) : 0;
     const threatLevel = getThreatLevel(riskScore);
 
     const fadeIn = {
@@ -117,12 +116,15 @@ export default function IpAnalyzer() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-black bg-white">
                             <IpDetailCard data={result} />
-                            <MlPredictionCard confidence={confidence} />
+                            <MlPredictionCard />
                             <AbuseCard
                                 totalReports={result?.totalReports || 0}
                                 data={{
-                                    recentCount: result?.totalReports ? Math.floor(result.totalReports * 0.17) : 0,
-                                    topType: result?.isProxy ? 'Proxy, Web' : 'SSH, Web',
+                                    lastReportedAt: result?.lastReportedAt ? new Date(result.lastReportedAt).toLocaleString() : null,
+                                    usageType: result?.usageType,
+                                    domain: result?.domain,
+                                    isTor: result?.isTor,
+                                    hostnames: result?.hostnames,
                                 }}
                             />
                             <RecommendationCard riskScore={riskScore} />
