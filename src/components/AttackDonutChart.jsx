@@ -11,7 +11,7 @@ export default function AttackDonutChart({ origins }) {
     const topExample = hasData ? { name: origins[0].originCountryName || origins[0].originCountryAlpha2, value: parseFloat(origins[0].value) } : null;
 
     const chartData = hasData
-        ? origins.map((o) => ({
+        ? origins.slice(0, 5).map((o) => ({
             name: o.originCountryName || o.originCountryAlpha2 || 'Unknown',
             value: parseFloat(o.value) || 0,
             code: o.originCountryAlpha2 || '',

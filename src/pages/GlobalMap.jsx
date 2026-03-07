@@ -8,7 +8,7 @@ import AttackDonutChart from '../components/AttackDonutChart';
 import VolumeBarChart from '../components/VolumeBarChart';
 import { getGlobalDDoS } from '../services/api';
 import { formatNumber } from '../utils/helpers';
-import { getCountryCoords, getCountryName } from '../utils/countryCoordinates';
+import { getCountryName } from '../utils/countryCoordinates';
 
 export default function GlobalMap() {
     // Map UI-friendly period keys to Cloudflare API dateRange values
@@ -16,7 +16,6 @@ export default function GlobalMap() {
     const [period, setPeriod] = useState('7d');
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
-    const [arcsData, setArcsData] = useState([]);
     const [targets, setTargets] = useState([]);
 
     useEffect(() => {
@@ -29,26 +28,9 @@ export default function GlobalMap() {
             const res = await getGlobalDDoS(PERIOD_MAP[period]);
             setData(res.data);
 
-            // Build arcs from top origins -> top targets
+            // Build targets list for sidebar
             if (res.data.topOrigins && res.data.topTargets) {
-                const origins = res.data.topOrigins.slice(0, 5);
                 const targetsList = res.data.topTargets.slice(0, 5);
-                const arcs = [];
-
-                origins.forEach((origin) => {
-                    const originCoords = getCountryCoords(origin.originCountryAlpha2 || origin.clientCountryAlpha2);
-                    targetsList.forEach((target) => {
-                        const targetCoords = getCountryCoords(target.targetCountryAlpha2 || target.clientCountryAlpha2);
-                        arcs.push({
-                            startLat: originCoords.lat,
-                            startLng: originCoords.lng,
-                            endLat: targetCoords.lat,
-                            endLng: targetCoords.lng,
-                            color: ['rgba(255,255,255,0.6)', 'rgba(255,255,255,0.1)'],
-                        });
-                    });
-                });
-                setArcsData(arcs);
 
                 // Build targets list with real data
                 const builtTargets = targetsList.map((t, i) => ({
@@ -177,7 +159,12 @@ export default function GlobalMap() {
 
             {/* Globe + Top Targets */}
             <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="grid grid-cols-1 lg:grid-cols-3 border-b border-l border-typo-border/20">
-                <GlobeView arcsData={arcsData} />
+                <GlobeView
+                    attackPairs={data?.attackPairs || []}
+                    origins={data?.topOrigins || []}
+                    targets={data?.topTargets || []}
+                    vectors={data?.vector || {}}
+                />
                 <TopTargets targets={targets} />
             </motion.div>
 
