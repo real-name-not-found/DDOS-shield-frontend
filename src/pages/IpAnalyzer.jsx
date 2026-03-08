@@ -100,8 +100,11 @@ export default function IpAnalyzer() {
             {/* Hero Section */}
             <motion.div {...fadeIn} className="grid grid-cols-1 lg:grid-cols-12 border border-black mb-12">
                 {/* Left: Title + Search */}
-                <div className="lg:col-span-7 p-6 md:p-10 lg:p-16 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-black relative bg-white">
-                    <span className="absolute top-6 left-6 text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                <div className="lg:col-span-7 p-6 pt-10 md:p-10 lg:p-16 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-black relative bg-white">
+                    <span className="hidden md:block absolute top-6 left-6 lg:left-16 text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                        Global Sensor Network
+                    </span>
+                    <span className="md:hidden text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-4 block">
                         Global Sensor Network
                     </span>
                     <h1 className="text-3xl md:text-5xl lg:text-7xl font-serif leading-[0.95] mb-6">
