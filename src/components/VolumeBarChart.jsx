@@ -116,8 +116,8 @@ export default function VolumeBarChart({ timeseries, period = '7d' }) {
     };
 
     return (
-        <div className="p-12 border-r border-b border-typo-border/20 flex flex-col">
-            <div className="flex justify-between items-end mb-12">
+        <div className="p-4 md:p-8 lg:p-12 border-r border-b border-typo-border/20 flex flex-col">
+            <div className="flex justify-between items-end mb-6 md:mb-12">
                 <div>
                     <div className="flex items-center gap-2">
                         <h3 className="font-serif text-3xl italic text-typo-text">Attack Volume</h3>
@@ -151,7 +151,7 @@ export default function VolumeBarChart({ timeseries, period = '7d' }) {
                 </span>
             </div>
 
-            <div className="flex-1 h-64">
+            <div className="flex-1 h-48 md:h-64">
                 {hasData ? (
                     isLongRange ? (
                         /* ── Smooth Area Chart for 28d / 90d ── */
