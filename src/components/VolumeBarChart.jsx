@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 
 export default function VolumeBarChart({ timeseries, period = '7d' }) {
+    const [showTip, setShowTip] = useState(false);
     const isLongRange = period === '30d' || period === '90d';
 
     const buildChartData = () => {
@@ -118,7 +119,29 @@ export default function VolumeBarChart({ timeseries, period = '7d' }) {
         <div className="p-12 border-r border-b border-typo-border/20 flex flex-col">
             <div className="flex justify-between items-end mb-12">
                 <div>
-                    <h3 className="font-serif text-3xl italic text-typo-text">Attack Volume</h3>
+                    <div className="flex items-center gap-2">
+                        <h3 className="font-serif text-3xl italic text-typo-text">Attack Volume</h3>
+                        <div className="relative">
+                            <button
+                                onMouseEnter={() => setShowTip(true)}
+                                onMouseLeave={() => setShowTip(false)}
+                                onClick={() => setShowTip(prev => !prev)}
+                                className="size-5 rounded-full border border-typo-text-light/30 flex items-center justify-center cursor-help hover:border-typo-text/50 transition-colors"
+                                aria-label="Info about Attack Volume"
+                            >
+                                <span className="text-[10px] font-bold text-typo-text-light/50 leading-none">?</span>
+                            </button>
+                            {showTip && (
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 z-50 w-72">
+                                    <div className="bg-black text-white px-4 py-3 shadow-xl">
+                                        <p className="text-[10px] uppercase tracking-widest font-bold text-white/50 mb-1.5">Attack Volume</p>
+                                        <p className="text-[11px] leading-relaxed text-white/90 font-light">Shows the intensity of Layer 3 DDoS attacks over the selected time period. Each bar or point represents the average attack traffic volume for that day. Higher values indicate more aggressive attack activity. Data sourced from Cloudflare Radar's global network.</p>
+                                    </div>
+                                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-black rotate-45"></div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <p className="text-[10px] uppercase tracking-widest text-typo-text-light mt-2">
                         Layer 3 DDoS intensity · {groupLabel} / {rangeLabel}
                     </p>

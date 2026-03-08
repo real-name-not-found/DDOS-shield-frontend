@@ -186,10 +186,10 @@ export default function GlobalMap() {
 
                 return (
                     <motion.div {...fadeIn} transition={{ delay: 0.1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-l border-t border-typo-border/20">
-                        <StatsCard label="Protocols" icon="lan" items={getTop5(data?.protocol, formatProtocol)} />
-                        <StatsCard label="Attack Vectors" icon="bolt" items={getTop5(data?.vector, formatVector)} />
-                        <StatsCard label="Attack Size" icon="speed" items={getTop5(data?.bitrate, formatBitrate)} />
-                        <StatsCard label="Attack Duration" icon="timer" items={getTop5(data?.duration, formatDuration)} />
+                        <StatsCard label="Protocols" icon="lan" items={getTop5(data?.protocol, formatProtocol)} tooltip="Shows which network protocols are being used in DDoS attacks worldwide. The main protocols are UDP, TCP, GRE, and ICMP. UDP is often the most exploited because it is connectionless — it sends data without verifying the receiver, making it easy to flood targets with massive traffic." />
+                        <StatsCard label="Attack Vectors" icon="bolt" items={getTop5(data?.vector, formatVector)} tooltip="Specific attack methods used to generate malicious traffic. Includes botnet-driven floods (e.g. Mirai), protocol exploits (SYN Flood), and amplification techniques." />
+                        <StatsCard label="Attack Size" icon="speed" items={getTop5(data?.bitrate, formatBitrate)} tooltip="Peak bandwidth of observed attacks. Ranges from under 500 Mbps (common) to over 100 Gbps (massive volumetric attacks targeting infrastructure)." />
+                        <StatsCard label="Attack Duration" icon="timer" items={getTop5(data?.duration, formatDuration)} tooltip="How long attacks persist before being mitigated. Most last over 3 hours, while shorter bursts under 10 minutes are often probing or hit-and-run attacks." />
                     </motion.div>
                 );
             })()}

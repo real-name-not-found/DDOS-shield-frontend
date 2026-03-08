@@ -1,11 +1,39 @@
-export default function StatsCard({ label, icon, items = [] }) {
+import { useState } from 'react';
+
+export default function StatsCard({ label, icon, items = [], tooltip }) {
     const hasData = items.length > 0;
     const maxValue = hasData ? items[0].value : 0;
+    const [showTip, setShowTip] = useState(false);
 
     return (
-        <div className="p-8 border-r border-b border-typo-border/20 flex flex-col hover:bg-[#F2EFE9] transition-colors duration-500">
+        <div className="p-4 md:p-8 border-r border-b border-typo-border/20 flex flex-col hover:bg-[#F2EFE9] transition-colors duration-500">
             <div className="flex justify-between items-start mb-6">
-                <span className="text-[11px] uppercase tracking-widest font-bold text-typo-text">{label}</span>
+                <div className="flex items-center gap-2">
+                    <span className="text-[11px] uppercase tracking-widest font-bold text-typo-text">{label}</span>
+                    {tooltip && (
+                        <div className="relative">
+                            <button
+                                onMouseEnter={() => setShowTip(true)}
+                                onMouseLeave={() => setShowTip(false)}
+                                onClick={() => setShowTip(prev => !prev)}
+                                className="size-4 rounded-full border border-typo-text-light/30 flex items-center justify-center cursor-help hover:border-typo-text/50 transition-colors"
+                                aria-label={`Info about ${label}`}
+                            >
+                                <span className="text-[9px] font-bold text-typo-text-light/50 leading-none">?</span>
+                            </button>
+
+                            {showTip && (
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 z-50 w-64">
+                                    <div className="bg-black text-white px-4 py-3 shadow-xl">
+                                        <p className="text-[10px] uppercase tracking-widest font-bold text-white/50 mb-1.5">{label}</p>
+                                        <p className="text-[11px] leading-relaxed text-white/90 font-light">{tooltip}</p>
+                                    </div>
+                                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-black rotate-45"></div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
                 <span className="material-symbols-outlined text-[20px] text-typo-text-light">{icon}</span>
             </div>
 
