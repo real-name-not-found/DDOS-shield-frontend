@@ -7,7 +7,7 @@ export default function IpDetailCard({ data }) {
     const org = data?.org || '—';
 
     return (
-        <div className="border-r border-b border-black p-8 flex flex-col min-h-[320px] hover:bg-neutral-50 transition-colors group">
+        <div className="border-r border-b border-black p-4 md:p-8 flex flex-col min-h-[280px] md:min-h-[320px] hover:bg-neutral-50 transition-colors group">
             <div className="mb-auto">
                 <div className="flex justify-between items-start mb-6">
                     <span className="text-[10px] uppercase tracking-widest text-neutral-400">Target</span>

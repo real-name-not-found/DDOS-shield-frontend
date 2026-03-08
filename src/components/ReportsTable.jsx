@@ -22,7 +22,7 @@ export default function AnalysisHistoryTable({ history = [], onSelectIP }) {
     return (
         <div className="mt-16 border border-black bg-white">
             {/* Header */}
-            <div className="p-8 lg:p-10 border-b border-black flex flex-col md:flex-row justify-between md:items-end gap-6">
+            <div className="p-4 md:p-8 lg:p-10 border-b border-black flex flex-col md:flex-row justify-between md:items-end gap-6">
                 <div>
                     <span className="text-[10px] uppercase tracking-widest text-neutral-500 mb-2 block">Your Data</span>
                     <h3 className="font-serif text-3xl">Analysis History</h3>
@@ -41,13 +41,13 @@ export default function AnalysisHistoryTable({ history = [], onSelectIP }) {
                         <table className="w-full text-left text-sm">
                             <thead className="text-[10px] uppercase font-bold text-neutral-500 tracking-widest bg-typo-bg border-b border-black">
                                 <tr>
-                                    <th className="px-8 py-6 font-normal" scope="col">Analyzed At</th>
-                                    <th className="px-8 py-6 font-normal" scope="col">IP Address</th>
-                                    <th className="px-8 py-6 font-normal" scope="col">Country</th>
-                                    <th className="px-8 py-6 font-normal" scope="col">Abuse Score</th>
-                                    <th className="px-8 py-6 font-normal" scope="col">Reports</th>
-                                    <th className="px-8 py-6 font-normal" scope="col">Status</th>
-                                    <th className="px-8 py-6 text-right font-normal" scope="col"></th>
+                                    <th className="px-3 md:px-8 py-3 md:py-6 font-normal" scope="col">Analyzed At</th>
+                                    <th className="px-3 md:px-8 py-3 md:py-6 font-normal" scope="col">IP Address</th>
+                                    <th className="px-3 md:px-8 py-3 md:py-6 font-normal" scope="col">Country</th>
+                                    <th className="px-3 md:px-8 py-3 md:py-6 font-normal" scope="col">Abuse Score</th>
+                                    <th className="px-3 md:px-8 py-3 md:py-6 font-normal" scope="col">Reports</th>
+                                    <th className="px-3 md:px-8 py-3 md:py-6 font-normal" scope="col">Status</th>
+                                    <th className="px-3 md:px-8 py-3 md:py-6 text-right font-normal" scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-black/10">
@@ -59,22 +59,22 @@ export default function AnalysisHistoryTable({ history = [], onSelectIP }) {
                                             className="hover:bg-neutral-50 transition-colors group cursor-pointer"
                                             onClick={() => onSelectIP && onSelectIP(item.ipAddress)}
                                         >
-                                            <td className="px-8 py-6 font-sans text-sm text-neutral-600 whitespace-nowrap">
+                                            <td className="px-3 md:px-8 py-3 md:py-6 font-sans text-sm text-neutral-600 whitespace-nowrap">
                                                 {new Date(item.analyzedAt).toLocaleString()}
                                             </td>
-                                            <td className="px-8 py-6 font-serif text-lg text-typo-text">
+                                            <td className="px-3 md:px-8 py-3 md:py-6 font-serif text-lg text-typo-text">
                                                 {item.ipAddress}
                                             </td>
-                                            <td className="px-8 py-6 font-sans text-sm text-neutral-600">
+                                            <td className="px-3 md:px-8 py-3 md:py-6 font-sans text-sm text-neutral-600">
                                                 {item.city ? `${item.city}, ${item.countryCode}` : item.country || '—'}
                                             </td>
-                                            <td className="px-8 py-6">
+                                            <td className="px-3 md:px-8 py-3 md:py-6">
                                                 <span className={`font-serif text-xl ${item.abuseScore >= 80 ? 'text-risk-critical font-bold' : item.abuseScore >= 50 ? 'text-risk-warning' : ''}`}>
                                                     {item.abuseScore ?? '—'}
                                                 </span>
                                             </td>
-                                            <td className="px-8 py-6 font-serif text-lg">{item.totalReports ?? '—'}</td>
-                                            <td className="px-8 py-6">
+                                            <td className="px-3 md:px-8 py-3 md:py-6 font-serif text-lg">{item.totalReports ?? '—'}</td>
+                                            <td className="px-3 md:px-8 py-3 md:py-6">
                                                 <div className="flex items-center gap-2">
                                                     <span className={`size-1.5 rounded-full ${status.color}`}></span>
                                                     <span className={`text-xs uppercase tracking-wider ${status.textColor}`}>
@@ -82,7 +82,7 @@ export default function AnalysisHistoryTable({ history = [], onSelectIP }) {
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td className="px-8 py-6 text-right">
+                                            <td className="px-3 md:px-8 py-3 md:py-6 text-right">
                                                 <span className="material-symbols-outlined text-neutral-400 group-hover:text-black transition-colors text-sm">
                                                     arrow_forward
                                                 </span>

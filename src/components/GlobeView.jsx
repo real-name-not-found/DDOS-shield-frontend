@@ -169,10 +169,10 @@ export default function GlobeView({ attackPairs = [], origins = [], targets = []
     return (
         <div
             ref={containerRef}
-            className="lg:col-span-2 border-r border-t border-typo-border/20 relative min-h-[650px] overflow-hidden bg-[#060a10] globe-container"
+            className="lg:col-span-2 border-r border-t border-typo-border/20 relative min-h-[400px] md:min-h-[650px] overflow-hidden bg-[#060a10] globe-container"
         >
             {/* Option 2: NOC Threat Feed Sidebar (Removed Blur for Performance) */}
-            <div className="absolute top-0 left-0 bottom-0 w-80 bg-[#060a10] border-r border-white/10 z-20 flex flex-col pointer-events-auto shadow-2xl">
+            <div className="hidden md:flex absolute top-0 left-0 bottom-0 w-80 bg-[#060a10] border-r border-white/10 z-20 flex-col pointer-events-auto shadow-2xl">
                 {/* Header & Latest */}
                 <div className="p-6 border-b border-white/10 bg-white/[0.02]">
                     <div className="flex items-center gap-2">
@@ -210,10 +210,10 @@ export default function GlobeView({ attackPairs = [], origins = [], targets = []
 
             {/* Globe */}
             {Globe && (
-                <div className="absolute inset-0 pl-80">
+                <div className="absolute inset-0 md:pl-80">
                     <Globe
                         ref={globeEl}
-                        width={Math.max(dims.width - 320, 100)}
+                        width={Math.max(dims.width - (window.innerWidth >= 768 ? 320 : 0), 100)}
                         height={dims.height}
                         globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
                         backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"

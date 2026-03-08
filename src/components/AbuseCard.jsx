@@ -4,7 +4,7 @@ export default function AbuseCard({ totalReports = 0, data, ipAddress }) {
     const [showWhitelistTip, setShowWhitelistTip] = useState(false);
 
     return (
-        <div className="border-r border-b border-black p-8 flex flex-col min-h-[320px] hover:bg-neutral-50 transition-colors">
+        <div className="border-r border-b border-black p-4 md:p-8 flex flex-col min-h-[280px] md:min-h-[320px] hover:bg-neutral-50 transition-colors">
             <div className="flex justify-between items-start mb-6">
                 <span className="text-[10px] uppercase tracking-widest text-neutral-400">Abuse Log</span>
                 <span className="material-symbols-outlined text-lg font-light text-neutral-400">report_problem</span>
