@@ -12,9 +12,8 @@ function weightedPick(items) {
     return items[0];
 }
 
-let _id = 0;
-
 export default function GlobeView({ attackPairs = [], origins = [], targets = [], vectors = {} }) {
+    const idCounter = useRef(0);
     const globeEl = useRef(null);
     const containerRef = useRef(null);
     const [Globe, setGlobe] = useState(null);
@@ -98,7 +97,7 @@ export default function GlobeView({ attackPairs = [], origins = [], targets = []
         const dst = { lat: baseDst.lat + jitter(), lng: baseDst.lng + jitter() };
 
         const vector = vectorList.length ? weightedPick(vectorList) : { name: 'UDP Flood' };
-        const id = `a${++_id}`;
+        const id = `a${++idCounter.current}`;
 
         // Color based on vector type
         const hue = (vector.name.charCodeAt(0) * 7 + vector.name.length * 31) % 360;
@@ -214,7 +213,7 @@ export default function GlobeView({ attackPairs = [], origins = [], targets = []
                 <div className="absolute inset-0 pl-80">
                     <Globe
                         ref={globeEl}
-                        width={dims.width - 320}
+                        width={Math.max(dims.width - 320, 100)}
                         height={dims.height}
                         globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
                         backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"

@@ -33,22 +33,28 @@ export const formatDate = (dateStr) => {
 };
 
 /**
- * Check if an IP address is valid
+ * Check if an IP address is valid (IPv4 or IPv6 including compressed forms)
  */
 export const isValidIP = (ip) => {
+    // IPv4: exactly 4 octets, each 0-255
     const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
     if (ipv4Regex.test(ip)) {
         return ip.split('.').every((part) => parseInt(part) >= 0 && parseInt(part) <= 255);
     }
-    return ipv6Regex.test(ip);
+    // IPv6: full form, compressed (::), and mixed
+    const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
+    const ipv6Full = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+    return ipv6Regex.test(ip) || ipv6Full.test(ip);
 };
 
 /**
- * Check if IP is private
+ * Check if IP is private (IPv4 only — IPv6 private ranges are not checked)
  */
 export const isPrivateIP = (ip) => {
+    // Only check IPv4 private ranges — skip IPv6
+    if (ip.includes(':')) return false;
     const parts = ip.split('.').map(Number);
+    if (parts.length !== 4) return false;
     if (parts[0] === 10) return true;
     if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true;
     if (parts[0] === 192 && parts[1] === 168) return true;

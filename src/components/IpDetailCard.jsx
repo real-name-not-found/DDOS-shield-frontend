@@ -39,8 +39,16 @@ export default function IpDetailCard({ data }) {
                 </div>
             </div>
             <div className="pt-6 mt-4">
-                <a className="text-[10px] uppercase tracking-widest border-b border-black pb-0.5 hover:opacity-60 transition-opacity cursor-pointer">
+                <a
+                    href={data?.ipAddress ? `https://whois.domaintools.com/${data.ipAddress}` : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-[10px] uppercase tracking-widest border-b border-black pb-0.5 transition-opacity inline-flex items-center gap-1.5 ${data?.ipAddress ? 'hover:opacity-60 cursor-pointer' : 'opacity-30 pointer-events-none'}`}
+                >
                     Full WHOIS Record
+                    <svg className="size-2.5 -translate-y-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                    </svg>
                 </a>
             </div>
         </div>

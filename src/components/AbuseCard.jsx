@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function AbuseCard({ totalReports = 0, data }) {
+export default function AbuseCard({ totalReports = 0, data, ipAddress }) {
     const [showWhitelistTip, setShowWhitelistTip] = useState(false);
 
     return (
@@ -79,9 +79,17 @@ export default function AbuseCard({ totalReports = 0, data }) {
                 </div>
             </div>
             <div className="pt-4">
-                <button className="w-full py-2 border border-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
-                    View Details
-                </button>
+                <a
+                    href={ipAddress ? `https://www.abuseipdb.com/check/${ipAddress}` : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full py-2 border border-black text-[10px] uppercase tracking-widest transition-colors flex items-center justify-center gap-1.5 ${ipAddress ? 'hover:bg-black hover:text-white cursor-pointer' : 'opacity-30 pointer-events-none'}`}
+                >
+                    View on AbuseIPDB
+                    <svg className="size-2.5 -translate-y-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                    </svg>
+                </a>
             </div>
         </div>
     );

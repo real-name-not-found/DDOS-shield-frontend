@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 const navItems = [
     { to: '/', label: 'Live Map' },
     { to: '/ip-analyzer', label: 'IP Analyzer' },
-    { to: '#', label: 'Intelligence' },
-    { to: '#', label: 'Reports' },
+    { to: null, label: 'Intelligence', upcoming: true },
+    { to: null, label: 'Reports', upcoming: true },
 ];
 
 export default function Navbar() {
@@ -21,21 +21,40 @@ export default function Navbar() {
                     </NavLink>
 
                     <nav className="hidden md:flex items-center gap-8">
-                        {navItems.map((item) => (
-                            <NavLink
-                                key={item.label}
-                                to={item.to}
-                                end={item.to === '/'}
-                                className={({ isActive }) =>
-                                    `text-xs uppercase tracking-widest transition-colors ${isActive
-                                        ? 'text-typo-text border-b border-typo-text pb-0.5 font-medium'
-                                        : 'text-typo-text-light hover:text-typo-text'
-                                    }`
-                                }
-                            >
-                                {item.label}
-                            </NavLink>
-                        ))}
+                        {navItems.map((item) =>
+                            item.upcoming ? (
+                                <div key={item.label} className="relative group">
+                                    <span className="text-xs uppercase tracking-widest text-typo-text-light/40 cursor-default flex items-center gap-1.5">
+                                        {item.label}
+                                        <span className="text-[8px] uppercase tracking-widest font-bold border border-typo-text-light/20 text-typo-text-light/40 px-1.5 py-0.5 leading-none">
+                                            Soon
+                                        </span>
+                                    </span>
+
+                                    {/* Tooltip on hover */}
+                                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200">
+                                        <div className="bg-black text-white px-4 py-2.5 whitespace-nowrap">
+                                            <p className="text-[10px] uppercase tracking-widest font-medium">Coming Soon</p>
+                                        </div>
+                                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-black rotate-45"></div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <NavLink
+                                    key={item.label}
+                                    to={item.to}
+                                    end={item.to === '/'}
+                                    className={({ isActive }) =>
+                                        `text-xs uppercase tracking-widest transition-colors ${isActive
+                                            ? 'text-typo-text border-b border-typo-text pb-0.5 font-medium'
+                                            : 'text-typo-text-light hover:text-typo-text'
+                                        }`
+                                    }
+                                >
+                                    {item.label}
+                                </NavLink>
+                            )
+                        )}
                     </nav>
                 </div>
 

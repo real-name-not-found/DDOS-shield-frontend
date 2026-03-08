@@ -8,7 +8,7 @@ import AttackDonutChart from '../components/AttackDonutChart';
 import VolumeBarChart from '../components/VolumeBarChart';
 import { getGlobalDDoS } from '../services/api';
 import { formatNumber } from '../utils/helpers';
-import { getCountryName } from '../utils/countryCoordinates';
+import { getCountryName } from '../data/countryCoords';
 
 export default function GlobalMap() {
     // Map UI-friendly period keys to Cloudflare API dateRange values

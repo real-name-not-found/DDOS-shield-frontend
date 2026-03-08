@@ -68,14 +68,22 @@ export default function IpAnalyzer() {
     };
 
     // Handle clicking an IP in the history table
-    const handleSelectIP = (selectedIp) => {
+    const handleSelectIP = async (selectedIp) => {
         setIp(selectedIp);
-        // Auto-analyze the selected IP
-        const fakeEvent = { preventDefault: () => { } };
-        setIp(selectedIp);
-        setTimeout(() => {
-            document.querySelector('form')?.requestSubmit();
-        }, 100);
+        setLoading(true);
+        setHasSearched(true);
+        try {
+            const res = await analyzeIP(selectedIp);
+            setResult(res.data);
+            toast.success('Analysis complete');
+            fetchHistory();
+        } catch (err) {
+            console.error('IP analysis error:', err);
+            const msg = err.response?.data?.error || 'Failed to analyze IP';
+            toast.error(msg);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const riskScore = result?.abuseScore || 0;
@@ -147,6 +155,7 @@ export default function IpAnalyzer() {
                             <MlPredictionCard />
                             <AbuseCard
                                 totalReports={result?.totalReports || 0}
+                                ipAddress={result?.ipAddress}
                                 data={{
                                     lastReportedAt: result?.lastReportedAt ? new Date(result.lastReportedAt).toLocaleString() : null,
                                     usageType: result?.usageType,
