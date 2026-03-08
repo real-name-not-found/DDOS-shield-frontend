@@ -154,4 +154,12 @@ export function getCountryCoord(code) {
     return COUNTRY_COORDS[code?.toUpperCase()] || null;
 }
 
+export function getCountryCoords(code) {
+    return COUNTRY_COORDS[code?.toUpperCase()] || { lat: 0, lng: 0, name: code || 'Unknown' };
+}
+
+export function getCountryName(code) {
+    return COUNTRY_COORDS[code?.toUpperCase()]?.name || code || 'Unknown';
+}
+
 export default COUNTRY_COORDS;

@@ -58,7 +58,7 @@ export default function MiniMap({ lat = 31.2, lng = 121.5, label = 'Shanghai, CN
     }, [lat, lng]);
 
     return (
-        <div className="lg:col-span-1 border-r border-black border-t border-black h-[500px] relative bg-neutral-100 group overflow-hidden">
+        <div className="lg:col-span-1 border-r border-black border-t border-black h-[300px] md:h-[500px] relative bg-neutral-100 group overflow-hidden">
             {/* Location label */}
             <div className="absolute top-6 left-6 z-[1000] bg-white border border-black px-4 py-2">
                 <span className="text-[10px] uppercase tracking-widest block text-neutral-500 mb-0.5">Origin</span>

@@ -8,7 +8,7 @@ import AttackDonutChart from '../components/AttackDonutChart';
 import VolumeBarChart from '../components/VolumeBarChart';
 import { getGlobalDDoS } from '../services/api';
 import { formatNumber } from '../utils/helpers';
-import { getCountryName } from '../utils/countryCoordinates';
+import { getCountryName } from '../data/countryCoords';
 
 export default function GlobalMap() {
     // Map UI-friendly period keys to Cloudflare API dateRange values
@@ -93,7 +93,7 @@ export default function GlobalMap() {
             {/* Hero Section */}
             <motion.div {...fadeIn} className="grid grid-cols-1 lg:grid-cols-12 border-t border-b border-typo-border">
                 {/* Left: Title */}
-                <div className="lg:col-span-8 py-16 pr-12 border-r border-typo-border flex flex-col justify-between min-h-[400px]">
+                <div className="lg:col-span-8 py-10 md:py-16 pr-4 md:pr-12 border-b lg:border-b-0 lg:border-r border-typo-border flex flex-col justify-between min-h-[280px] md:min-h-[400px]">
                     <div>
                         <div className="flex items-center gap-3 mb-6">
                             <span className="text-[10px] uppercase tracking-widest font-medium text-typo-text-light">Live Feed</span>
@@ -103,7 +103,7 @@ export default function GlobalMap() {
                                 Active
                             </span>
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-serif font-light leading-[0.9] tracking-tighter mb-8 text-typo-text">
+                        <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif font-light leading-[0.9] tracking-tighter mb-8 text-typo-text">
                             Global Threat<br />Intelligence Map
                         </h1>
                     </div>

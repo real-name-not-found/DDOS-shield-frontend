@@ -7,7 +7,7 @@ export default function IpDetailCard({ data }) {
     const org = data?.org || '—';
 
     return (
-        <div className="border-r border-b border-black p-8 flex flex-col min-h-[320px] hover:bg-neutral-50 transition-colors group">
+        <div className="border-r border-b border-black p-4 md:p-8 flex flex-col min-h-[280px] md:min-h-[320px] hover:bg-neutral-50 transition-colors group">
             <div className="mb-auto">
                 <div className="flex justify-between items-start mb-6">
                     <span className="text-[10px] uppercase tracking-widest text-neutral-400">Target</span>
@@ -39,8 +39,16 @@ export default function IpDetailCard({ data }) {
                 </div>
             </div>
             <div className="pt-6 mt-4">
-                <a className="text-[10px] uppercase tracking-widest border-b border-black pb-0.5 hover:opacity-60 transition-opacity cursor-pointer">
+                <a
+                    href={data?.ipAddress ? `https://whois.domaintools.com/${data.ipAddress}` : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-[10px] uppercase tracking-widest border-b border-black pb-0.5 transition-opacity inline-flex items-center gap-1.5 ${data?.ipAddress ? 'hover:opacity-60 cursor-pointer' : 'opacity-30 pointer-events-none'}`}
+                >
                     Full WHOIS Record
+                    <svg className="size-2.5 -translate-y-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                    </svg>
                 </a>
             </div>
         </div>

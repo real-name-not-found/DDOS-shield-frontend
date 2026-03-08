@@ -58,7 +58,7 @@ export default function ThreatRadar({ result }) {
     };
 
     return (
-        <div className="lg:col-span-2 border-r border-t border-black bg-white p-8 lg:p-12 relative h-[500px] flex flex-col">
+        <div className="lg:col-span-2 border-r border-t border-black bg-white p-4 md:p-8 lg:p-12 relative h-[350px] md:h-[500px] flex flex-col">
             <div className="flex justify-between items-start mb-4">
                 <div>
                     <h3 className="font-serif text-3xl">Threat Radar</h3>

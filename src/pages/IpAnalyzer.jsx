@@ -68,14 +68,22 @@ export default function IpAnalyzer() {
     };
 
     // Handle clicking an IP in the history table
-    const handleSelectIP = (selectedIp) => {
+    const handleSelectIP = async (selectedIp) => {
         setIp(selectedIp);
-        // Auto-analyze the selected IP
-        const fakeEvent = { preventDefault: () => { } };
-        setIp(selectedIp);
-        setTimeout(() => {
-            document.querySelector('form')?.requestSubmit();
-        }, 100);
+        setLoading(true);
+        setHasSearched(true);
+        try {
+            const res = await analyzeIP(selectedIp);
+            setResult(res.data);
+            toast.success('Analysis complete');
+            fetchHistory();
+        } catch (err) {
+            console.error('IP analysis error:', err);
+            const msg = err.response?.data?.error || 'Failed to analyze IP';
+            toast.error(msg);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const riskScore = result?.abuseScore || 0;
@@ -92,11 +100,11 @@ export default function IpAnalyzer() {
             {/* Hero Section */}
             <motion.div {...fadeIn} className="grid grid-cols-1 lg:grid-cols-12 border border-black mb-12">
                 {/* Left: Title + Search */}
-                <div className="lg:col-span-7 p-10 lg:p-16 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-black relative bg-white">
+                <div className="lg:col-span-7 p-6 md:p-10 lg:p-16 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-black relative bg-white">
                     <span className="absolute top-6 left-6 text-[10px] uppercase tracking-[0.2em] text-neutral-500">
                         Global Sensor Network
                     </span>
-                    <h1 className="text-5xl lg:text-7xl font-serif leading-[0.95] mb-6">
+                    <h1 className="text-3xl md:text-5xl lg:text-7xl font-serif leading-[0.95] mb-6">
                         IP Threat<br />
                         <i className="font-serif italic font-light">Intelligence</i>
                     </h1>
@@ -109,7 +117,7 @@ export default function IpAnalyzer() {
                             <div className="flex-1 relative">
                                 <input
                                     type="text"
-                                    className="bg-transparent border-b border-black text-2xl font-serif w-full py-2 px-0 focus:ring-0 focus:outline-none focus:border-black placeholder-neutral-400"
+                                    className="bg-transparent border-b border-black text-lg md:text-2xl font-serif w-full py-2 px-0 focus:ring-0 focus:outline-none focus:border-black placeholder-neutral-400"
                                     placeholder="Enter IP address..."
                                     value={ip}
                                     onChange={(e) => setIp(e.target.value)}
@@ -147,6 +155,7 @@ export default function IpAnalyzer() {
                             <MlPredictionCard />
                             <AbuseCard
                                 totalReports={result?.totalReports || 0}
+                                ipAddress={result?.ipAddress}
                                 data={{
                                     lastReportedAt: result?.lastReportedAt ? new Date(result.lastReportedAt).toLocaleString() : null,
                                     usageType: result?.usageType,
